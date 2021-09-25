@@ -1,0 +1,49 @@
+{
+  "list-users": {
+    "positive": [
+      {
+        "page": 1,
+        "users-per-page": 6,
+        "user": {
+          "index": 1,
+          "email": "janet.weaver@reqres.in"
+        }
+      },
+      {
+        "page": 2,
+        "users-per-page": 6,
+        "user": {
+          "index": 0,
+          "email": "michael.lawson@reqres.in"
+        }
+      }
+    ],
+    "not-existed-page": 3,
+    "invalid-page": -1
+  },
+
+  "single-user": {
+    "users": [
+      {
+        "id": 2,
+        "email": "janet.weaver@reqres.in",
+        "first_name": "Janet",
+        "last_name": "Weaver"
+      },
+      {
+        "id": 7,
+        "email": "michael.lawson@reqres.in",
+        "first_name": "Michael",
+        "last_name": "Lawson"
+      },
+      {
+        "id": 12,
+        "email": "rachel.howell@reqres.in",
+        "first_name": "Rachel",
+        "last_name": "Howell"
+      }
+    ],
+    "not-exist-id": 50,
+    "invalid-id": -3
+  }
+}

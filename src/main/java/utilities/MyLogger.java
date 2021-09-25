@@ -1,5 +1,7 @@
 package utilities;
 
+import org.testng.SkipException;
+
 import java.io.IOException;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
@@ -25,7 +27,7 @@ public class MyLogger {
             fileHandler.setFormatter(new SimpleFormatter());
             logger.addHandler(fileHandler);
         } catch (IOException e) {
-            MyLogger.severe(MyLogger.class.getSimpleName(), "Can not log in the external file.");
+            MyLogger.warning(MyLogger.class.getSimpleName(), "Can not log in the external file.");
             e.printStackTrace();
         }
     }
@@ -37,6 +39,7 @@ public class MyLogger {
      */
     public static void severe(String title, String msg) {
         logger.severe(title+ ": --> "+ msg);
+        throw new SkipException(msg);
     }
 
     /**

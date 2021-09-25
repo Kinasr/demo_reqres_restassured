@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+    <groups>
+        <define name="positive"/>
+        <define name="negative"/>
+    </groups>
+    <test name="Run All Tests">
+        <classes>
+            <class name="tests.GetListUsers"/>
+        </classes>
+    </test>
+</suite>

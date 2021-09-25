@@ -1,8 +1,13 @@
 package helpers;
 
+import io.qameta.allure.model.Status;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import models.AssertionType;
 import models.HttpRequest;
+import utilities.MyReport;
+
+import static org.testng.Assert.*;
 
 public class ApiActions {
     private final HttpRequest httpRequest;
@@ -29,6 +34,7 @@ public class ApiActions {
 
         if (httpRequest.getCookies() != null) request.cookies(httpRequest.getCookies());
 
+        var stepId = MyReport.startStep( this.getClass().getSimpleName(), "Sending request to --> " + url);
         switch (httpRequest.getType()) {
             case GET-> response = request.get(url);
             case POST -> response = request.post(url);
@@ -36,17 +42,45 @@ public class ApiActions {
             case PATCH -> response = request.patch(url);
             case DELETE -> response = request.delete(url);
         }
+        if (response != null)
+            MyReport.updateStepStatus(stepId, Status.PASSED);
 
+        MyReport.stopStep(stepId);
         return this;
     }
 
     public ApiActions assertStatusCode() {
+        var stepId = MyReport.startStep(this.getClass().getSimpleName(), "Checking the status code to be -> "
+                + httpRequest.getExpectedStatusCode());
         response.then().statusCode(httpRequest.getExpectedStatusCode().getValue());
+        MyReport.updateStepToBePassed(stepId);
 
         return this;
     }
 
     public Response extractResponse() {
-        return response.then().extract().response();
+        var res = response.then().extract().response();
+
+        MyReport.attach(this.getClass().getSimpleName(), res.asPrettyString());
+        return res;
+    }
+
+    /**
+     * If we assert with true type we need to pass actual = null and expected as boolean condition
+     * @param assertType the type of assertion we want to do
+     * @param actual the actual result
+     * @param expected the expected result
+     * @param msg the message that will appear in both logger and report.
+     */
+    public void assertThat(AssertionType assertType, Object actual, Object expected, String msg) {
+        var stepId = MyReport.startStep(this.getClass().getSimpleName(), msg);
+
+        switch (assertType) {
+            case TRUE -> assertTrue((boolean) expected);
+            case EQUALS -> assertEquals(actual, expected);
+            case NOT_EQUALS -> assertNotEquals(actual, expected);
+        }
+
+        MyReport.updateStepToBePassed(stepId);
     }
 }
