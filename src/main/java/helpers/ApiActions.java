@@ -65,6 +65,20 @@ public class ApiActions {
         return res;
     }
 
+    public ApiActions assertResponseTime(long expected) {
+        var actual = response.time();
+        var stepId = MyReport.startStep(this.getClass().getSimpleName(),
+                "Checking the response time to be less or equal " + expected +
+                        "ms //<Actual is: " + actual + "ms>");
+
+        if (actual <=  expected)
+            MyReport.updateStepToBePassed(stepId);
+
+        MyReport.stopStep(stepId);
+
+        return this;
+    }
+
     /**
      * If we assert with true type we need to pass actual = null and expected as boolean condition
      * @param assertType the type of assertion we want to do

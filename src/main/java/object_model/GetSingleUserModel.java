@@ -7,8 +7,6 @@ import models.HttpRequest;
 import models.HttpStatusCodes;
 import models.RequestTypes;
 
-import java.util.Map;
-
 public class GetSingleUserModel {
     private Response response;
     private final ApiActions apiActions;
@@ -26,6 +24,7 @@ public class GetSingleUserModel {
         response = apiActions
                 .send()
                 .assertStatusCode()
+                .assertResponseTime(500)
                 .extractResponse();
         return this;
     }

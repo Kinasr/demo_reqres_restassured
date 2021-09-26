@@ -32,6 +32,7 @@ public class GetListUsersModel {
         response = apiActions
                 .send()
                 .assertStatusCode()
+                .assertResponseTime(500)
                 .extractResponse();
 
         return this;
