@@ -1,4 +1,4 @@
-package tests;
+package base;
 
 import helpers.JsonReader;
 import org.testng.annotations.BeforeSuite;

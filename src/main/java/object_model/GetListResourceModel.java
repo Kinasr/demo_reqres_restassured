@@ -9,57 +9,49 @@ import models.RequestTypes;
 
 import java.util.Map;
 
-
-public class GetListUsersModel {
+public class GetListResourceModel {
     private Response response;
     private final ApiActions apiActions;
     private final int page;
 
-    public GetListUsersModel(int page, HttpStatusCodes statusCode) {
+    public GetListResourceModel(int page, HttpStatusCodes statusCodes) {
         this.page = page;
 
-        var httpRequest = new HttpRequest(RequestTypes.GET, "users", statusCode);
+        var httpRequest = new HttpRequest(RequestTypes.GET, "unknown", statusCodes);
         httpRequest.setQueryParams(Map.of("page", page));
 
-        apiActions = new ApiActions(httpRequest);
+        this.apiActions = new ApiActions(httpRequest);
     }
 
     public Response getResponse() {
         return response;
     }
 
-    public GetListUsersModel getUsersInPage() {
+    public GetListResourceModel getResourcesInPage() {
         response = apiActions
                 .send()
                 .assertStatusCode()
                 .assertResponseTime(500)
                 .extractResponse();
-
         return this;
     }
 
-    public GetListUsersModel assertPageNumber() {
+    public GetListResourceModel assertPageNumber() {
         var actual = response
                 .jsonPath()
                 .getInt("page");
-
         apiActions
-                .assertThat(AssertionType.EQUALS, actual, page, "Checking the number of returned page");
-
+                .assertThat(AssertionType.EQUALS, actual, page, "Checking the page number");
         return this;
     }
 
-    public GetListUsersModel assertNumOfUsersPerPage(int expected) {
+    public GetListResourceModel assertNumberOfResourcesPerPage(int expected) {
         var actual = response
                 .jsonPath()
                 .getList("data");
-
         apiActions
                 .assertThat(AssertionType.EQUALS, actual.size(), expected,
-                        "Checking the number of users per page to be -> " + expected);
-
+                        "Checking the number of resources per page");
         return this;
     }
-
-
 }

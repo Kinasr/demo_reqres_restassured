@@ -6,6 +6,7 @@ import models.AssertionType;
 import models.HttpRequest;
 import models.HttpStatusCodes;
 import models.RequestTypes;
+import models.MyDataRecords.UserData;
 
 public class GetSingleUserModel {
     private Response response;
@@ -53,6 +54,20 @@ public class GetSingleUserModel {
         var actual = response.jsonPath().getString("data.last_name");
         apiActions
                 .assertThat(AssertionType.EQUALS, actual, expected, "Checking user Last name");
+        return this;
+    }
+
+    public GetSingleUserModel assertUserData(UserData expectedData) {
+        var actual = new UserData(
+                response.jsonPath().getInt("data.id"),
+                response.jsonPath().getString("data.email"),
+                response.jsonPath().getString("data.first_name"),
+                response.jsonPath().getString("data.last_name"),
+                response.jsonPath().getString("data.avatar")
+        );
+
+        apiActions.assertThat(AssertionType.EQUALS, actual, expectedData, "Checking the user data");
+
         return this;
     }
 }

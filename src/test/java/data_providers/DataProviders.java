@@ -1,6 +1,8 @@
 package data_providers;
 
 import helpers.JsonReader;
+import models.MyDataRecords.ResourceData;
+import models.MyDataRecords.UserData;
 import org.testng.annotations.DataProvider;
 
 import java.util.ArrayList;
@@ -20,8 +22,6 @@ public class DataProviders {
         var dataList = new ArrayList<String>();
         dataList.add("page<int>");
         dataList.add("users-per-page<int>");
-        dataList.add("user.index<int>");
-        dataList.add("user.email");
 
         return setDataInTwoDimensionalObject(source, dataList);
     }
@@ -29,14 +29,48 @@ public class DataProviders {
     @DataProvider(name = "single-user")
     public static Object[][] getSingleUserData() {
         var source = "single-user.users";
+        var numOfRows = jsonReader.get(source).toJsonArray().size();
+        var object = new Object[numOfRows][1];
 
+        for (var i = 0; i < numOfRows; i++) {
+            object[i][0] = new UserData(
+                    jsonReader.get(source + "[" + i + "].id").toInt(),
+                    jsonReader.get(source + "[" + i + "].email").toString(),
+                    jsonReader.get(source + "[" + i + "].first-name").toString(),
+                    jsonReader.get(source + "[" + i + "].last-name").toString(),
+                    jsonReader.get(source + "[" + i + "].avatar").toString()
+            );
+        }
+
+        return object;
+    }
+
+    @DataProvider(name = "list-resources")
+    public static Object[][] getListResourcesData() {
+        var source = "list-resources.positive";
         var dataList = new ArrayList<String>();
-        dataList.add("id<int>");
-        dataList.add("email");
-        dataList.add("first_name");
-        dataList.add("last_name");
+        dataList.add("page<int>");
+        dataList.add("number-of-resources-per-page<int>");
 
         return setDataInTwoDimensionalObject(source, dataList);
+    }
+
+    @DataProvider(name = "single-resource")
+    public static Object[][] getSingleResourceData() {
+        var source = "single-resource.resources";
+        var numOfRows = jsonReader.get(source).toJsonArray().size();
+        var object = new Object[numOfRows][1];
+
+        for (var i = 0; i < numOfRows; i++) {
+            object[i][0] = new ResourceData(
+                    jsonReader.get(source + "[" + i + "].id").toInt(),
+                    jsonReader.get(source + "[" + i + "].name").toString(),
+                    jsonReader.get(source + "[" + i + "].year").toInt(),
+                    jsonReader.get(source + "[" + i + "].color").toString(),
+                    jsonReader.get(source + "[" + i + "].pantone_value").toString()
+            );
+        }
+        return object;
     }
 
     private static Object[][] setDataInTwoDimensionalObject(String jsonSource, List<String> jsonPaths) {

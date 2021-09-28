@@ -1,5 +1,6 @@
 package tests;
 
+import base.BaseTest;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
@@ -12,12 +13,11 @@ public class GetListUsers extends BaseTest {
     @Test(groups = "positive", dataProvider = "list-users", dataProviderClass = data_providers.DataProviders.class)
     @Severity(SeverityLevel.CRITICAL)
     @Epic("Positive")
-    public void getUsersInThePage(int page, int usersPerPage, int userIndex, String userEmail) {
+    public void getUsersInThePage(int page, int usersPerPage) {
         new GetListUsersModel(page, HttpStatusCodes.OK)
                 .getUsersInPage()
                 .assertPageNumber()
-                .assertNumOfUsersPerPage(usersPerPage)
-                .assertNthUserEmail(userIndex, userEmail);
+                .assertNumOfUsersPerPage(usersPerPage);
     }
 
     @Test(groups = "negative")

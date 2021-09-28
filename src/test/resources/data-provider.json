@@ -3,47 +3,80 @@
     "positive": [
       {
         "page": 1,
-        "users-per-page": 6,
-        "user": {
-          "index": 1,
-          "email": "janet.weaver@reqres.in"
-        }
+        "users-per-page": 6
       },
       {
         "page": 2,
-        "users-per-page": 6,
-        "user": {
-          "index": 0,
-          "email": "michael.lawson@reqres.in"
-        }
+        "users-per-page": 6
       }
     ],
     "not-existed-page": 3,
     "invalid-page": -1
   },
-
   "single-user": {
     "users": [
       {
         "id": 2,
         "email": "janet.weaver@reqres.in",
-        "first_name": "Janet",
-        "last_name": "Weaver"
+        "first-name": "Janet",
+        "last-name": "Weaver",
+        "avatar": "https://reqres.in/img/faces/2-image.jpg"
       },
       {
         "id": 7,
         "email": "michael.lawson@reqres.in",
-        "first_name": "Michael",
-        "last_name": "Lawson"
+        "first-name": "Michael",
+        "last-name": "Lawson",
+        "avatar": "https://reqres.in/img/faces/7-image.jpg"
       },
       {
         "id": 12,
         "email": "rachel.howell@reqres.in",
-        "first_name": "Rachel",
-        "last_name": "Howell"
+        "first-name": "Rachel",
+        "last-name": "Howell",
+        "avatar": "https://reqres.in/img/faces/12-image.jpg"
       }
     ],
     "not-exist-id": 50,
     "invalid-id": -3
+  },
+  "list-resources": {
+    "positive": [
+      {
+        "page": 1,
+        "number-of-resources-per-page": 6
+      },
+      {
+        "page": 2,
+        "number-of-resources-per-page": 6
+      }
+    ],
+    "not-existed-page": 3,
+    "invalid-page": -1
+  },
+  "single-resource": {
+    "resources": [
+      {
+        "id": 2,
+        "name": "fuchsia rose",
+        "year": 2001,
+        "color": "#C74375",
+        "pantone_value": "17-2031"
+      },
+      {
+        "id": 5,
+        "name": "tigerlily",
+        "year": 2004,
+        "color": "#E2583E",
+        "pantone_value": "17-1456"
+      },
+      {
+        "id": 11,
+        "name": "turquoise",
+        "year": 2010,
+        "color": "#45B5AA",
+        "pantone_value": "15-5519"
+      }
+    ]
   }
 }
