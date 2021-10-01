@@ -96,6 +96,13 @@ public class DataProviders {
         return setDataInTwoDimensionalObject("users-data", source, List.of("name", "job"), null);
     }
 
+    @DataProvider(name = "invalid-account-data")
+    public static Object[][] getInvalidAccountData() {
+        var source = "invalid";
+
+        return setDataInTwoDimensionalObject("account-data", source, List.of(""), null);
+    }
+
     private static Object[][] setDataInTwoDimensionalObject(String fileName, String jsonSource, List<String> jsonPaths,
                                                             Function<Object[][], Object[][]> callback) {
         var jsonReader = new JsonReader(fileName);

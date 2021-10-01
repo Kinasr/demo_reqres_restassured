@@ -1,0 +1,29 @@
+{
+  "model": {
+    "email": "#email#",
+    "password": "#password#"
+  },
+  "valid":{
+    "email": "test@test.com",
+    "password": "Password123"
+  },
+  "invalid": [
+    {
+      "email": "",
+      "password": ""
+    },
+    {
+      "email": " ",
+      "password": " "
+    },
+    {
+      "email": "test",
+      "password": " "
+    },
+    {
+      "email": "test@test.com",
+      "password": " "
+    }
+  ],
+  "error-message": "Missing email or username"
+}

@@ -16,6 +16,8 @@
             <class name="tests.PutUpdateUser"/>
             <class name="tests.PatchUpdateUser"/>
             <class name="tests.DeleteUser"/>
+            <class name="tests.PostRegister"/>
+            <class name="tests.PostLogin"/>
         </classes>
     </test>
 </suite>
