@@ -8,6 +8,14 @@
     <test name="Run All Tests">
         <classes>
             <class name="tests.GetListUsers"/>
+            <class name="tests.GetSingleUser"/>
+            <class name="tests.GetListResource"/>
+            <class name="tests.GetSingleResource"/>
+            <class name="tests.GetSingleResource"/>
+            <class name="tests.PostCreateUser"/>
+            <class name="tests.PutUpdateUser"/>
+            <class name="tests.PatchUpdateUser"/>
+            <class name="tests.DeleteUser"/>
         </classes>
     </test>
 </suite>

@@ -46,6 +46,8 @@ public class ApiActions {
             MyReport.updateStepStatus(stepId, Status.PASSED);
 
         MyReport.stopStep(stepId);
+
+        MyReport.attach(this.getClass().getSimpleName(), response.asPrettyString());
         return this;
     }
 
@@ -59,10 +61,7 @@ public class ApiActions {
     }
 
     public Response extractResponse() {
-        var res = response.then().extract().response();
-
-        MyReport.attach(this.getClass().getSimpleName(), res.asPrettyString());
-        return res;
+        return response.then().extract().response();
     }
 
     public ApiActions assertResponseTime(long expected) {

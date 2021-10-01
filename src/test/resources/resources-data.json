@@ -1,0 +1,43 @@
+{
+  "list-resources": {
+    "positive": [
+      {
+        "page": 1,
+        "number-of-resources-per-page": 6
+      },
+      {
+        "page": 2,
+        "number-of-resources-per-page": 6
+      }
+    ],
+    "not-existed-page": 3,
+    "invalid-page": -1
+  },
+  "single-resource": {
+    "resources": [
+      {
+        "id": 2,
+        "name": "fuchsia rose",
+        "year": 2001,
+        "color": "#C74375",
+        "pantone_value": "17-2031"
+      },
+      {
+        "id": 5,
+        "name": "tigerlily",
+        "year": 2004,
+        "color": "#E2583E",
+        "pantone_value": "17-1456"
+      },
+      {
+        "id": 11,
+        "name": "turquoise",
+        "year": 2010,
+        "color": "#45B5AA",
+        "pantone_value": "15-5519"
+      }
+    ],
+    "not-exist-id": 50,
+    "invalid-id": -3
+  }
+}

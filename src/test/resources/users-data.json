@@ -40,43 +40,70 @@
     "not-exist-id": 50,
     "invalid-id": -3
   },
-  "list-resources": {
-    "positive": [
+  "create-user": {
+    "new-user": {
+      "name": "Ahmed_###",
+      "job": "Gamer"
+    },
+    "existed-user": {
+      "name": "Janet",
+      "job": "Tester"
+    },
+    "invalid-parameters": [
       {
-        "page": 1,
-        "number-of-resources-per-page": 6
+        "name": "",
+        "job": ""
       },
       {
-        "page": 2,
-        "number-of-resources-per-page": 6
-      }
-    ],
-    "not-existed-page": 3,
-    "invalid-page": -1
-  },
-  "single-resource": {
-    "resources": [
-      {
-        "id": 2,
-        "name": "fuchsia rose",
-        "year": 2001,
-        "color": "#C74375",
-        "pantone_value": "17-2031"
+        "name": "   ",
+        "job": "   "
       },
       {
-        "id": 5,
-        "name": "tigerlily",
-        "year": 2004,
-        "color": "#E2583E",
-        "pantone_value": "17-1456"
+        "name": "ALaa",
+        "job": ""
       },
       {
-        "id": 11,
-        "name": "turquoise",
-        "year": 2010,
-        "color": "#45B5AA",
-        "pantone_value": "15-5519"
+        "name": "",
+        "job": "Tester"
       }
     ]
+  },
+  "update-user": {
+    "id": 2,
+    "model": {
+      "name": "#name#",
+      "job": "#job#"
+    },
+    "valid-parameters": {
+      "name": "Alaa",
+      "job": "Tester"
+    },
+    "invalid-parameters": [
+      {
+        "name": "",
+        "job": ""
+      },
+      {
+        "name": "   ",
+        "job": "   "
+      },
+      {
+        "name": "ALaa",
+        "job": ""
+      },
+      {
+        "name": "",
+        "job": "Tester"
+      }
+    ],
+    "not-exist": {
+      "id": 222,
+      "name": "Alaa",
+      "job": "Tester"
+    }
+  },
+  "delete-user": {
+    "valid": 2,
+    "not-existed": 222
   }
 }

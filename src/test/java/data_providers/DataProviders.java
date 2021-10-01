@@ -7,14 +7,9 @@ import org.testng.annotations.DataProvider;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 public class DataProviders {
-    private static final JsonReader jsonReader;
-
-    static {
-        jsonReader = new JsonReader("data-provider");
-    }
-
     @DataProvider(name = "list-users")
     public static Object[][] gerListUsersData() {
         var source = "list-users.positive";
@@ -23,26 +18,32 @@ public class DataProviders {
         dataList.add("page<int>");
         dataList.add("users-per-page<int>");
 
-        return setDataInTwoDimensionalObject(source, dataList);
+        return setDataInTwoDimensionalObject("users-data", source, dataList, null);
     }
 
     @DataProvider(name = "single-user")
     public static Object[][] getSingleUserData() {
         var source = "single-user.users";
-        var numOfRows = jsonReader.get(source).toJsonArray().size();
-        var object = new Object[numOfRows][1];
+        var dataList = new ArrayList<String>();
+        dataList.add("id<int>");
+        dataList.add("email");
+        dataList.add("first-name");
+        dataList.add("last-name");
+        dataList.add("avatar");
 
-        for (var i = 0; i < numOfRows; i++) {
-            object[i][0] = new UserData(
-                    jsonReader.get(source + "[" + i + "].id").toInt(),
-                    jsonReader.get(source + "[" + i + "].email").toString(),
-                    jsonReader.get(source + "[" + i + "].first-name").toString(),
-                    jsonReader.get(source + "[" + i + "].last-name").toString(),
-                    jsonReader.get(source + "[" + i + "].avatar").toString()
-            );
-        }
-
-        return object;
+        return setDataInTwoDimensionalObject("users-data", source, dataList, object -> {
+            var obj = new Object[object.length][1];
+            for (var i = 0; i < object.length; i++) {
+                obj[i][0] = new UserData(
+                        (int) object[i][0],
+                        (String) object[i][1],
+                        (String) object[i][2],
+                        (String) object[i][3],
+                        (String) object[i][4]
+                );
+            }
+            return obj;
+        });
     }
 
     @DataProvider(name = "list-resources")
@@ -52,28 +53,52 @@ public class DataProviders {
         dataList.add("page<int>");
         dataList.add("number-of-resources-per-page<int>");
 
-        return setDataInTwoDimensionalObject(source, dataList);
+        return setDataInTwoDimensionalObject("resources-data", source, dataList, null);
     }
 
     @DataProvider(name = "single-resource")
     public static Object[][] getSingleResourceData() {
         var source = "single-resource.resources";
-        var numOfRows = jsonReader.get(source).toJsonArray().size();
-        var object = new Object[numOfRows][1];
+        var dataList = new ArrayList<String>();
+        dataList.add("id<int>");
+        dataList.add("name");
+        dataList.add("year<int>");
+        dataList.add("color");
+        dataList.add("pantone_value");
 
-        for (var i = 0; i < numOfRows; i++) {
-            object[i][0] = new ResourceData(
-                    jsonReader.get(source + "[" + i + "].id").toInt(),
-                    jsonReader.get(source + "[" + i + "].name").toString(),
-                    jsonReader.get(source + "[" + i + "].year").toInt(),
-                    jsonReader.get(source + "[" + i + "].color").toString(),
-                    jsonReader.get(source + "[" + i + "].pantone_value").toString()
-            );
-        }
-        return object;
+        return setDataInTwoDimensionalObject("resources-data", source, dataList, object -> {
+            var obj = new Object[object.length][1];
+
+            for (var i = 0; i < object.length; i++) {
+                obj[i][0] = new ResourceData(
+                        (int) object[i][0],
+                        (String) object[i][1],
+                        (int) object[i][2],
+                        (String) object[i][3],
+                        (String) object[i][4]
+                );
+            }
+            return obj;
+        });
     }
 
-    private static Object[][] setDataInTwoDimensionalObject(String jsonSource, List<String> jsonPaths) {
+    @DataProvider(name = "invalid-user-creation")
+    public static Object[][] getInvalidUserData() {
+        var source = "create-user.invalid-parameters";
+
+        return setDataInTwoDimensionalObject("users-data", source, List.of(""), null);
+    }
+
+    @DataProvider(name = "invalid-user-update")
+    public static Object[][] getInvalidUpdateUserData() {
+        var source = "update-user.invalid-parameters";
+
+        return setDataInTwoDimensionalObject("users-data", source, List.of("name", "job"), null);
+    }
+
+    private static Object[][] setDataInTwoDimensionalObject(String fileName, String jsonSource, List<String> jsonPaths,
+                                                            Function<Object[][], Object[][]> callback) {
+        var jsonReader = new JsonReader(fileName);
         var numOfRows = jsonReader.get(jsonSource).toJsonArray().size();
         var numOfColumns = jsonPaths.size();
         var object = new Object[numOfRows][numOfColumns];
@@ -88,6 +113,6 @@ public class DataProviders {
                     object[i][j] = jsonReader.get(path).toString();
             }
         }
-        return object;
+        return callback == null ? object : callback.apply(object);
     }
 }

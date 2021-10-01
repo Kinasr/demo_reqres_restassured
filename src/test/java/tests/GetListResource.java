@@ -1,14 +1,21 @@
 package tests;
 
-import base.BaseTest;
+import helpers.JsonReader;
 import io.qameta.allure.Epic;
 import io.qameta.allure.Severity;
 import io.qameta.allure.SeverityLevel;
 import models.HttpStatusCodes;
 import object_model.GetListResourceModel;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class GetListResource extends BaseTest {
+public class GetListResource {
+    private JsonReader jsonReader;
+
+    @BeforeClass
+    public void setUpClass() {
+        jsonReader = new JsonReader("resources-data");
+    }
 
     @Test(groups = "positive",dataProvider = "list-resources", dataProviderClass = data_providers.DataProviders.class)
     @Severity(SeverityLevel.CRITICAL)
@@ -24,7 +31,7 @@ public class GetListResource extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Epic("Negative")
     public void getResourcesInANotExistingPage() {
-        var page = jsonReader().get("list-resources.not-existed-page").toInt();
+        var page = jsonReader.get("list-resources.not-existed-page").toInt();
         new GetListResourceModel(page, HttpStatusCodes.NOT_FOUND)
                 .getResourcesInPage();
     }
@@ -33,7 +40,7 @@ public class GetListResource extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     @Epic("Negative")
     public void getResourcesInAnInvalidPageNumber() {
-        var page = jsonReader().get("list-resources.invalid-page").toInt();
+        var page = jsonReader.get("list-resources.invalid-page").toInt();
         new GetListResourceModel(page, HttpStatusCodes.BAD_REQUEST)
                 .getResourcesInPage();
     }
