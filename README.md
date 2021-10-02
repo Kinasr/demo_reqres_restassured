@@ -1,4 +1,4 @@
-####A demo API Automation project to test [ReqRes](https://reqres.in/) using [REST Assured](https://mvnrepository.com/artifact/io.rest-assured/rest-assured)
+#### A demo API Automation project to test [ReqRes](https://reqres.in/) using [REST Assured](https://mvnrepository.com/artifact/io.rest-assured/rest-assured)
 
 with using **TestNG** and **Allure Report**
 
