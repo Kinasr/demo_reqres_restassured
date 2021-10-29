@@ -5,13 +5,19 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import models.AssertionType;
 import models.HttpRequest;
+import models.VerifyRecord;
+import org.testng.asserts.SoftAssert;
 import utilities.MyReport;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.testng.Assert.*;
 
 public class ApiActions {
     private final HttpRequest httpRequest;
     private Response response;
+    private SoftAssert verification = null;
 
     public ApiActions(HttpRequest httpRequest) {
         this.httpRequest = httpRequest;
@@ -85,6 +91,7 @@ public class ApiActions {
      * @param expected the expected result
      * @param msg the message that will appear in both logger and report.
      */
+    @Deprecated
     public void assertThat(AssertionType assertType, Object actual, Object expected, String msg) {
         var stepId = MyReport.startStep(this.getClass().getSimpleName(), msg);
 
@@ -95,5 +102,49 @@ public class ApiActions {
         }
 
         MyReport.updateStepToBePassed(stepId);
+    }
+
+    public void assertThat(String message, Runnable runnable) {
+        var stepId = MyReport.startStep(this.getClass().getSimpleName(), message);
+        runnable.run();
+
+        MyReport.updateStepToBePassed(stepId);
+    }
+
+    public void performVerification(List<VerifyRecord> records) {
+        var softAssertion = new SoftAssert();
+        records.forEach(record -> {
+            var stepId = MyReport.startStep(this.getClass().getSimpleName(), record.getMessage());
+            record.getConsumer().accept(softAssertion);
+
+            if (record.condition().orElse(true))
+                MyReport.updateStepStatus(stepId, Status.PASSED);
+            else
+                MyReport.updateStepStatus(stepId, Status.FAILED);
+
+            MyReport.stopStep(stepId);
+        });
+    }
+
+    public ApiActions startVerification(VerifyRecord record) {
+        if (verification == null)
+            verification = new SoftAssert();
+
+        var stepId = MyReport.startStep(this.getClass().getSimpleName(), record.getMessage());
+        record.getConsumer().accept(verification);
+
+        if (record.condition().orElse(true))
+            MyReport.updateStepStatus(stepId, Status.PASSED);
+        else
+            MyReport.updateStepStatus(stepId, Status.FAILED);
+
+        MyReport.stopStep(stepId);
+
+        return this;
+    }
+
+    public void verify() {
+        verification.assertAll();
+        verification = null;
     }
 }

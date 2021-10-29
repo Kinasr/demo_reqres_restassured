@@ -2,12 +2,13 @@ package object_model;
 
 import helpers.ApiActions;
 import io.restassured.response.Response;
-import models.AssertionType;
 import models.HttpRequest;
 import models.HttpStatusCodes;
 import models.RequestTypes;
 
 import java.util.Map;
+
+import static org.testng.Assert.assertEquals;
 
 public class GetListResourceModel {
     private Response response;
@@ -40,8 +41,10 @@ public class GetListResourceModel {
         var actual = response
                 .jsonPath()
                 .getInt("page");
-        apiActions
-                .assertThat(AssertionType.EQUALS, actual, page, "Checking the page number");
+        apiActions.assertThat(
+                        "Checking the page number",
+                        () -> assertEquals(actual, page)
+                );
         return this;
     }
 
@@ -49,9 +52,10 @@ public class GetListResourceModel {
         var actual = response
                 .jsonPath()
                 .getList("data");
-        apiActions
-                .assertThat(AssertionType.EQUALS, actual.size(), expected,
-                        "Checking the number of resources per page");
+        apiActions.assertThat(
+                "Checking the number of resources per page",
+                () -> assertEquals(actual.size(), expected)
+                );
         return this;
     }
 }
