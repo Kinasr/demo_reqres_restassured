@@ -1,10 +1,13 @@
 package models;
 
 import io.restassured.http.ContentType;
+import lombok.Data;
 
 import java.util.Map;
+import java.util.Optional;
 
-public class HttpRequest {
+public @Data
+class HttpRequest {
     private final RequestTypes type;
     private final String serviceName;
     private final HttpStatusCodes expectedStatusCode;
@@ -21,63 +24,27 @@ public class HttpRequest {
         this.expectedStatusCode = expectedStatusCode;
     }
 
-    public String getServiceName() {
-        return serviceName;
+    public Optional<Map<String, Object>> headers() {
+        return Optional.ofNullable(headers);
     }
 
-    public HttpStatusCodes getExpectedStatusCode() {
-        return expectedStatusCode;
+    public Optional<ContentType> contentType() {
+        return Optional.ofNullable(contentType);
     }
 
-    public ContentType getContentType() {
-        return contentType;
+    public Optional<Map<String, Object>> formParams() {
+        return Optional.ofNullable(formParams);
     }
 
-    public void setContentType(ContentType contentType) {
-        this.contentType = contentType;
+    public Optional<Map<String, Object>> queryParams() {
+        return Optional.ofNullable(queryParams);
     }
 
-    public Map<String, Object> getQueryParams() {
-        return queryParams;
+    public Optional<String> body() {
+        return Optional.ofNullable(body);
     }
 
-    public void setQueryParams(Map<String, Object> queryParams) {
-        this.queryParams = queryParams;
-    }
-
-    public Map<String, String> getCookies() {
-        return cookies;
-    }
-
-    public void setCookies(Map<String, String> cookies) {
-        this.cookies = cookies;
-    }
-
-    public RequestTypes getType() {
-        return type;
-    }
-
-    public Map<String, Object> getHeaders() {
-        return headers;
-    }
-
-    public void setHeaders(Map<String, Object> headers) {
-        this.headers = headers;
-    }
-
-    public Map<String, Object> getFormParams() {
-        return formParams;
-    }
-
-    public void setFormParams(Map<String, Object> formParams) {
-        this.formParams = formParams;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
+    public Optional<Map<String, String>> cookies() {
+        return Optional.ofNullable(cookies);
     }
 }
