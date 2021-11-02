@@ -2,6 +2,7 @@ package helpers;
 
 import io.qameta.allure.model.Status;
 import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import models.AssertionType;
 import models.HttpRequest;
@@ -9,8 +10,8 @@ import models.VerifyRecord;
 import org.testng.asserts.SoftAssert;
 import utilities.MyReport;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.testng.Assert.*;
 
@@ -28,26 +29,21 @@ public class ApiActions {
 
         var request = RestAssured.given();
 
-        if (httpRequest.getHeaders() != null) request.headers(httpRequest.getHeaders());
-
-        if (httpRequest.getContentType() != null) request.contentType(httpRequest.getContentType());
-
-        if (httpRequest.getFormParams() != null) request.formParams(httpRequest.getFormParams());
-
-        if (httpRequest.getQueryParams() != null) request.queryParams(httpRequest.getQueryParams());
-
-        if (httpRequest.getBody() != null) request.body(httpRequest.getBody());
-
-        if (httpRequest.getCookies() != null) request.cookies(httpRequest.getCookies());
+        request
+                .headers(httpRequest.headers().orElse(Map.of()))
+                .contentType(httpRequest.contentType().orElse(ContentType.TEXT))
+                .formParams(httpRequest.formParams().orElse(Map.of()))
+                .queryParams(httpRequest.queryParams().orElse(Map.of()))
+                .body(httpRequest.body().orElse(""))
+                .cookies(httpRequest.cookies().orElse(Map.of()));
 
         var stepId = MyReport.startStep( this.getClass().getSimpleName(), "Sending request to --> " + url);
-        switch (httpRequest.getType()) {
-            case GET-> response = request.get(url);
-            case POST -> response = request.post(url);
-            case PUT -> response = request.put(url);
-            case PATCH -> response = request.patch(url);
-            case DELETE -> response = request.delete(url);
-        }
+
+        response = httpRequest
+                .getType()
+                .send()
+                .apply(request, url);
+
         if (response != null)
             MyReport.updateStepStatus(stepId, Status.PASSED);
 
